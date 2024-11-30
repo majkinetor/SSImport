@@ -20,6 +20,10 @@ function import() {
 
         $bulkCopy = New-Object Data.SqlClient.SqlBulkCopy($dst, [System.Data.SqlClient.SqlBulkCopyOptions]::KeepIdentity)
         $bulkCopy.DestinationTableName = "[$($table.Schema)].[$($table.Name)]"
+        if ($table.Map) {
+            foreach ($m in $table.Map.Keys) { $res = $bulkCopy.ColumnMappings.Add($m, $table.Map.$m) }
+        }
+
         $bulkCopy.BulkCopyTimeOut = $BulkCopyTimeout
         $bulkCopy.BatchSize = $BulkCopyBatchSize
         $bulkCopy.WriteToServer($sqlReader)

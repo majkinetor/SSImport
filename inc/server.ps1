@@ -10,6 +10,11 @@ function Get-Server($ServerInstance, $Username, $Password) {
 function Get-TableDdl($Database, $TableName, $Schema = 'dbo') {
     $options = New-Object -TypeName Microsoft.SqlServer.Management.Smo.ScriptingOptions
     $options.DriAll = $true
+    $options.DriAllKeys = $true
+    $options.DriForeignKeys = $true
+    $options.DriNonClustered = $true
+    $options.Indexes = $true
+    $options.IncludeHeaders = $true
     $options.SchemaQualify = $true
 
     $res = $Database.Tables.Item($TableName, $Schema).Script($options)
