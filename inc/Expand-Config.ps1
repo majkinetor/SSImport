@@ -16,5 +16,17 @@ function Expand-Config {
             if ($null -ne $Config.$env.$key) { continue }
             $env.$key = $defaultValue
         }
+
+        $env.Tables = foreach ($table in $env.Tables) {
+            [hashtable] $t = $table -is [string] ? @{ Name = $table } : $table
+
+            $a = $t.Name -split '\.'
+            if ($a[1]) { $t.Schema = $a[0]; $t.Name = $a[1]} else { $t.Schema = 'dbo'; $t.Name = $a[0] }
+
+            if (!$t.Query) { $t.Query = "select * from []" }
+
+            $t.Query = $t.Query.Replace('[]', "[$($t.Schema)].[$($t.Name)]")
+            $t
+        }
     }
 }

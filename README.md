@@ -1,3 +1,3 @@
-# Apr-sync
+# ssimport
 
-Sync Budget Users type 8 data with apr-proxy service
+SQL Server import tables tool.
