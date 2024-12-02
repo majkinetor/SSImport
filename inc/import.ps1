@@ -8,7 +8,8 @@ function import() {
     $SQLConnection.Open()
 
     foreach ($table in $Env.Tables) {
-        log "$i/$($Env.Tables.Count)  $($table.Name)" -Ident 1 -NoNewLine -PadRight 50
+        if ($table.SchemaImported -ne $table.Schema -or $table.NameImported -ne $table.Name) { $s = ' -> ' + $table.SchemaImported + '.' + $table.NameImported }
+        log "$i/$($Env.Tables.Count)  $($table.Schema).$($table.Name)$s" -Ident 1 -NoNewLine -PadRight 80
         $i++
 
         $res = Invoke-Sqlcmd -ConnectionString $src -Query "select count(*) as count from ($($table.Query)) as t"
@@ -19,10 +20,8 @@ function import() {
         [System.Data.SqlClient.SqlDataReader] $sqlReader = $sqlCommand.ExecuteReader()
 
         $bulkCopy = New-Object Data.SqlClient.SqlBulkCopy($dst, [System.Data.SqlClient.SqlBulkCopyOptions]::KeepIdentity)
-        $bulkCopy.DestinationTableName = "[$($table.Schema)].[$($table.Name)]"
-        if ($table.Map) {
-            foreach ($m in $table.Map.Keys) { $res = $bulkCopy.ColumnMappings.Add($m, $table.Map.$m) }
-        }
+        $bulkCopy.DestinationTableName = "$($table.SchemaImported).$($table.NameImported)"
+        if ($table.Map) { foreach ($m in $table.Map.Keys) { $res = $bulkCopy.ColumnMappings.Add($m, $table.Map.$m) } }
 
         $bulkCopy.BulkCopyTimeOut = $BulkCopyTimeout
         $bulkCopy.BatchSize = $BulkCopyBatchSize

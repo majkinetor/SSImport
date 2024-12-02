@@ -8,14 +8,17 @@ Get-ChildItem $PSScriptRoot\inc\*.ps1 | % {. $_ }
 Expand-Config
 
 Import-Module -Name SQLServer
-log "Environment:" $Environment
 
 $Env = $Config.$Environment
 $src = $env.Source; $src = Get-MsSqlConString @src
 $dst = $env.Destination; $dst = Get-MsSqlConString @dst
+
+log "Environment:" $Environment
+log "Source:" $env.Source.ServerInstance $env.Source.Database -Ident 1
+log "Destination:" $env.Destination.ServerInstance $env.Destination.Database -Ident 1
+
 $SourceDb      = Get-SqlDatabase -ConnectionString $src -Name $env.Source.Database
 $DestinationDb = Get-SqlDatabase -ConnectionString $dst -Name $env.Destination.Database
-
 if ($env.CreateDb -and !$DestinationDb) {
     log "CREATING DATABASE" $env.Destination.Database
     $master = Get-MsSqlConString -ServerInstance $env.Destination.ServerInstance -Database master -Username $env.Destination.Username -Password $env.Destination.Password

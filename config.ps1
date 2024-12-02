@@ -12,8 +12,11 @@
         Username       = 'sa'
         Password       = 'P@ssw0rd'
 
-        #PreScript  = 'EXEC sp_MSforeachtable @command1="ALTER TABLE ? NOCHECK CONSTRAINT ALL"'
-        #PostScript = 'EXEC sp_MSforeachtable @command1="ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL"'
+        ## Not implemented yet
+        #PreScriptAll  = 'EXEC sp_MSforeachtable @command1="ALTER TABLE ? NOCHECK CONSTRAINT ALL"'
+        #PostScriptAll = 'EXEC sp_MSforeachtable @command1="ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL"'
+        #PreScriptEach = ''
+        #PostScripEach = ''
     }
 
     jafin = @{
@@ -32,15 +35,16 @@
     }
 
     top = @{
-        Source = @{ Database = 'topDB_ATest' }
-        Destination = @{ Database = 'topDB_ATest2'}
+        Source = @{ ServerInstance = 'top-dev.nil.rs'; Database = 'topDB' }
+        Destination = @{ Database = "topDB_Dev_$((Get-Date).ToString('yyyy_mm_dd'))" }
 
         Tables = @(
            @{
                 Name = 'registry.tBankAccount'
+                NameImported = 'registry_imported.tBankAccount_DevImport';
                 Map = @{
-                    Id                       = "Id"
-                    Bank                     = "Bank"
+                    Id                       = "Id_imported"
+                    Bank                     = "Bank_imported"
                     Number                   = "Number"
                     ControlNumber            = "ControlNumber"
                     # Group                    = "Group"

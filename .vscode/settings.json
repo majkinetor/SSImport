@@ -1,0 +1,13 @@
+{
+    "spellright.language": [
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "latex",
+        "powershell",
+        "plaintext",
+        "yaml",
+        "ini",
+        "markdown"
+    ]
+}

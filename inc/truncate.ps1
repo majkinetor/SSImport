@@ -6,6 +6,6 @@ function truncate() {
         log "$i/$($Env.Tables.Count)  $($table.Name)" -Ident 1
         $i++
 
-        $res = Invoke-Sqlcmd -ConnectionString $dst -Query "truncate table [$($table.Name)]"
+        $res = Invoke-Sqlcmd -ConnectionString $dst -Query "truncate table $($table.SchemaImported).$($table.NameImported)"
     }
 }
