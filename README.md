@@ -54,10 +54,10 @@ With HashTable, the following import options can be used:
 @{
     Defaults = @{
         CreateDb    = $false   # Create destination database if it doesn't exist
-        Create      = $true    # Create tables
+        Create      = $true    # Create tables that do not exist
         Truncate    = $false   # Truncate tables
-        Drop        = $false   # Drop tables
-        Import      = $false   # Import data
+        Drop        = $false   # Drop tables in reverse order
+        Import      = $true    # Import data
 
         # Defaults for source/destination servers
         ServerInstance = '.'
@@ -67,25 +67,24 @@ With HashTable, the following import options can be used:
     }
 
     # environment HashTable
-    remote_db = @{
-        Source      = @{ Database = 'REMOTE_DB'; ServerInstance = 'remote-db.example.com';  Username = 'remote_user'; Password = $Env:PASSWORD }
-        Destination = @{ Database = 'REMOTE_DB_SSIMPORT' }
+    aw = @{
+        Source      = @{ Database = 'AdventureWorks2019' }
+        Destination = @{ Database = 'AdventureWorks2019_SSIMPORT' }
 
         Tables = @(
-            'table1', 'schema.table2', '[schema].[table3]',
+            'Person.AddressType'
+            'Person.BusinessEntity'
+            'Person.ContactType'
             @{
-                Name = 'table4'
-                Query = 'select TOP 1000 * from [] order by CreatedDate desc'
-            },
-            @{
-                Name = 'schema.table5'
-                NameImported = 'schema_imported.table5_imported'
+                Name = 'Person.Person'
+                Query = 'select TOP 1000 * from []'
             }
+            'HumanResources.Department'
+            'HumanResources.Shift'
         )
 
         CreateDb = $true
-        Drop     = $true
-        Import   = $true
+        Drop = $true
     }
 }
 ```
