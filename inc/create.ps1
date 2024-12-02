@@ -8,6 +8,7 @@ function create(){
 
         #[string] $tableScript = $tbl.Script() | Select-Object -Skip 2
         $tableScript = Get-TableDdl $SourceDb $table.Name $table.Schema
+        $tablescript = $tablescript -replace "\(CONTENT .+\)"
         if ($table.NameImported -ne $table.Name) {
             $tableScript = $tableScript.Replace($table.Schema, $table.SchemaImported).Replace($table.Name, $table.NameImported)
             if ($table.Map) {

@@ -1,5 +1,5 @@
 param(
-    [string] $Environment = 'top',
+    [string[]] $Environments = 'aw',
     [int] $BulkCopyBatchSize = 250000,
     [int] $BulkCopyTimeout = 600
 )
@@ -9,25 +9,30 @@ Expand-Config
 
 Import-Module -Name SQLServer
 
-$Env = $Config.$Environment
-$src = $env.Source; $src = Get-MsSqlConString @src
-$dst = $env.Destination; $dst = Get-MsSqlConString @dst
+foreach ($e in $Environments) {
+    $Env = $Config.$e
 
-log "Environment:" $Environment
-log "Source:" $env.Source.ServerInstance $env.Source.Database -Ident 1
-log "Destination:" $env.Destination.ServerInstance $env.Destination.Database -Ident 1
+    $src = $Env.Source; $src = Get-MsSqlConString @src
+    $dst = $Env.Destination; $dst = Get-MsSqlConString @dst
 
-$SourceDb      = Get-SqlDatabase -ConnectionString $src -Name $env.Source.Database
-$DestinationDb = Get-SqlDatabase -ConnectionString $dst -Name $env.Destination.Database
-if ($env.CreateDb -and !$DestinationDb) {
-    log "CREATING DATABASE" $env.Destination.Database
-    $master = Get-MsSqlConString -ServerInstance $env.Destination.ServerInstance -Database master -Username $env.Destination.Username -Password $env.Destination.Password
-    $res = Invoke-Sqlcmd -ConnectionString $master -Query "CREATE DATABASE $($env.Destination.Database)"
+    log "Environment:" $e
+    log "Source:" $Env.Source.ServerInstance $env.Source.Database -Ident 1
+    log "Destination:" $Env.Destination.ServerInstance $env.Destination.Database -Ident 1
+
+    $SourceDb      = Get-SqlDatabase -ConnectionString $src -Name $env.Source.Database
+    $DestinationDb = Get-SqlDatabase -ConnectionString $dst -Name $env.Destination.Database
+    if ($env.CreateDb -and !$DestinationDb) {
+        log "CREATING DATABASE" $env.Destination.Database
+        $master = Get-MsSqlConString -ServerInstance $env.Destination.ServerInstance -Database master -Username $env.Destination.Username -Password $env.Destination.Password
+        $res = Invoke-Sqlcmd -ConnectionString $master -Query "CREATE DATABASE $($env.Destination.Database)"
+    }
+
+    $res = Invoke-Sqlcmd -ConnectionString $dst -Query $Env.PreScriptAll
+    drop
+    create
+    truncate
+    import
+    log "done $e"
+    log ("="*40)
 }
-
-drop
-create
-truncate
-import
-
 log "done"

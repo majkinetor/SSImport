@@ -2,9 +2,10 @@ function drop() {
     if (!$Env.Drop) { return }
 
     log "Dropping tables"; $i = 1
-    foreach ($table in $Env.Tables) {
-        log "$i/$($Env.Tables.Count)   $($table.SchemaImported).$($table.NameImported)" -Ident 1
-        $i++
+    for ($i = $Env.Tables.Count-1; $i -ge 0; $i--)
+    {
+        $table = $Env.Tables[$i]
+        log "$($i+1)/$($Env.Tables.Count)  $($table.SchemaImported).$($table.NameImported)" -Ident 1
 
         try {
             #$res = $DestinationDb.ExecuteNonQuery("drop table [$($table.Name)]")

@@ -13,7 +13,7 @@ function Expand-Config {
                 continue
             }
 
-            if ($null -ne $Config.$env.$key) { continue }
+            if ($null -ne $env.$key) { continue }
             $env.$key = $defaultValue
         }
 

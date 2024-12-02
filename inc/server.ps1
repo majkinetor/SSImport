@@ -16,6 +16,8 @@ function Get-TableDdl($Database, $TableName, $Schema = 'dbo') {
     $options.Indexes         = $true
     $options.IncludeHeaders  = $true
     $options.SchemaQualify   = $true
+    #$WithDependencies        = $true
+    $options.ConvertUserDefinedDataTypesToBaseType = $true
 
     $res = $Database.Tables.Item((c $TableName), (c $Schema)).Script($options)
     $res -join "`n"

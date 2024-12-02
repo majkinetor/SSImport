@@ -2,7 +2,7 @@
     Defaults = @{
         CreateDb    = $true     # Create destination database if it doesn't exist
         Create      = $true     # Create tables
-        Truncate    = $true     # Truncate tables
+        Truncate    = $false     # Truncate tables
         Drop        = $true     # Drop tables
         Import      = $true     # Import data
 
@@ -13,10 +13,50 @@
         Password       = 'P@ssw0rd'
 
         ## Not implemented yet
-        #PreScriptAll  = 'EXEC sp_MSforeachtable @command1="ALTER TABLE ? NOCHECK CONSTRAINT ALL"'
+        PreScriptAll  = 'EXEC sp_MSforeachtable @command1="ALTER TABLE ? NOCHECK CONSTRAINT ALL"'
         #PostScriptAll = 'EXEC sp_MSforeachtable @command1="ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL"'
         #PreScriptEach = ''
         #PostScripEach = ''
+    }
+
+    # https://learn.microsoft.com/en-us/sql/samples/adventureworks-install-configure
+    aw = @{
+        Source = @{ Database = 'AdventureWorks2019' }
+        Destination = @{ Database = 'AdventureWorks2019_SSIMPORT4' }
+        Tables = @(
+            'Person.AddressType'
+            'Person.BusinessEntity'
+            'Person.ContactType'
+            @{
+                Name = 'Person.Person'
+                #Query = 'select TOP 1000 * from []'
+            }
+
+            'HumanResources.Department'
+            'HumanResources.Shift'
+            @{
+                Name = 'HumanResources.[Employee]'
+                Map = @{
+                      'BusinessEntityID' = 'BusinessEntityID'
+                      'NationalIDNumber' = 'NationalIDNumber'
+                      'LoginID'          = 'LoginID'
+                      'OrganizationNode' = 'OrganizationNode'
+                     #'OrganizationLevel' = 'OrganizationLevel'
+                      'JobTitle'         = 'JobTitle'
+                      'BirthDate'        = 'BirthDate'
+                      'MaritalStatus'    = 'MaritalStatus'
+                      'Gender'           = 'Gender'
+                      'HireDate'         = 'HireDate'
+                      'SalariedFlag'     = 'SalariedFlag'
+                      'VacationHours'    = 'VacationHours'
+                      'SickLeaveHours'   = 'SickLeaveHours'
+                      'CurrentFlag'      = 'CurrentFlag'
+                      'rowguid'          = 'rowguid'
+                      'ModifiedDate'     = 'ModifiedDate'
+                }
+            }
+            'HumanResources.EmployeePayHistory'
+        )
     }
 
     jafin = @{
@@ -36,7 +76,7 @@
 
     top = @{
         Source = @{ ServerInstance = 'top-dev.nil.rs'; Database = 'topDB' }
-        Destination = @{ Database = "topDB_Dev_$((Get-Date).ToString('yyyy_mm_dd'))" }
+        Destination = @{ Database = "topDB_Dev_$((Get-Date).ToString('yyMMdd'))" }
 
         Tables = @(
            @{
