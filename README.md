@@ -34,21 +34,23 @@ If specific option is not set in the environment, script will use the option in 
 
 ### Table array
 
-List of tables to import to the destination database is specified in the `Tables` environment option. It can be either be array of strings or HashTables. HashTable allows for configuration of detailed table import options (like `Query`). Tables are processed in the order specified.
+List of tables to import to the destination database is specified in the `Tables` environment option. It can either be array of strings or HashTables. HashTable allows for configuration of detailed table import options (like `Query`). Tables are processed in the order specified.
 
-When using string, table is specified as `table_name` or `schema.table_name` (and any variant using `[]`). The simple string syntax is fast to use, but doesn't allow detailed import configuration.
+With string, table is specified as `table_name` or `schema.table_name` (and any variant using `[]`). The simple string syntax is fast to use, but doesn't allow detailed import options.
 
 With HashTable, the following import options can be used:
 
-|     Option     |                     Description                     |      Default       |
-| -------------- | --------------------------------------------------- | ------------------ |
-| `Name`         | Name of the source table (with optional schema)     |                    |
-| `NameImported` | Rename the destination table (with optional schema) | `Name`             |
-| `Map`          | Map of the source to destination table columns      | map all by name    |
-| `Query`        | Query used to select data from the table            | `select * from []` |
+|     Option     |                     Description                      |      Default       |
+| -------------- | ---------------------------------------------------- | ------------------ |
+| `Name`         | Name of the source table (with optional schema)      |                    |
+| `NameImported` | Name of the destination table (with optional schema) | `Name`             |
+| `Map`          | Map of the source to destination table columns       | map all by name    |
+| `Query`        | Query used to select data from the table             | `select * from []` |
 
 
 ## Example config
+
+The following example shows configuration with one environment `aw`, for the [AdventureWorks](https://learn.microsoft.com/en-us/sql/samples/adventureworks-install-configure) sample database.
 
 ```powershell
 @{
@@ -66,9 +68,9 @@ With HashTable, the following import options can be used:
         Password       = 'P@ssw0rd'
     }
 
-    # environment HashTable
+    # Environment HashTable
     aw = @{
-        Source      = @{ Database = 'AdventureWorks2019' }
+        Source = @{ Database = 'AdventureWorks2019' }
         Destination = @{ Database = 'AdventureWorks2019_SSIMPORT' }
 
         Tables = @(
@@ -81,6 +83,28 @@ With HashTable, the following import options can be used:
             }
             'HumanResources.Department'
             'HumanResources.Shift'
+            @{
+                Name = 'HumanResources.[Employee]'
+                Map = @{
+                    'BusinessEntityID' = 'BusinessEntityID'
+                    'NationalIDNumber' = 'NationalIDNumber'
+                    'LoginID'          = 'LoginID'
+                    'OrganizationNode' = 'OrganizationNode'
+                #   'OrganizationLevel' = 'OrganizationLevel'  # Removed computed column
+                    'JobTitle'         = 'JobTitle'
+                    'BirthDate'        = 'BirthDate'
+                    'MaritalStatus'    = 'MaritalStatus'
+                    'Gender'           = 'Gender'
+                    'HireDate'         = 'HireDate'
+                    'SalariedFlag'     = 'SalariedFlag'
+                    'VacationHours'    = 'VacationHours'
+                    'SickLeaveHours'   = 'SickLeaveHours'
+                    'CurrentFlag'      = 'CurrentFlag'
+                    'rowguid'          = 'rowguid'
+                    'ModifiedDate'     = 'ModifiedDate'
+                }
+            }
+            'HumanResources.EmployeePayHistory'
         )
 
         CreateDb = $true

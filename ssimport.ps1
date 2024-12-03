@@ -27,7 +27,6 @@ foreach ($e in $Environments) {
         $res = Invoke-Sqlcmd -ConnectionString $master -Query "CREATE DATABASE $($env.Destination.Database)"
     }
 
-    $res = Invoke-Sqlcmd -ConnectionString $dst -Query $Env.PreScriptAll
     drop
     create
     truncate
