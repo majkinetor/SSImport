@@ -130,23 +130,23 @@ Output:
 01:20:29 [00:00:10]      2/8  [Person].[BusinessEntity]
 01:20:29 [00:00:10]      1/8  [Person].[AddressType]
 01:20:29 [00:00:10]    Creating tables
-01:20:29 [00:00:10]      1/8  [Person].[AddressType]                                                     ok
-01:20:29 [00:00:10]      2/8  [Person].[BusinessEntity]                                                  ok
-01:20:29 [00:00:10]      3/8  [Person].[ContactType]                                                     ok
-01:20:29 [00:00:10]      4/8  [Person].[Person]                                                          ok
-01:20:29 [00:00:10]      5/8  [HumanResources].[Department]                                              ok
-01:20:29 [00:00:10]      6/8  [HumanResources].[Shift]                                                   ok
-01:20:29 [00:00:10]      7/8  [HumanResources].[Employee]                                                ok
-01:20:29 [00:00:10]      8/8  [HumanResources].[EmployeePayHistory]                                      ok
+01:20:29 [00:00:10]      1/8  [Person].[AddressType]                   ok
+01:20:29 [00:00:10]      2/8  [Person].[BusinessEntity]                ok
+01:20:29 [00:00:10]      3/8  [Person].[ContactType]                   ok
+01:20:29 [00:00:10]      4/8  [Person].[Person]                        ok
+01:20:29 [00:00:10]      5/8  [HumanResources].[Department]            ok
+01:20:29 [00:00:10]      6/8  [HumanResources].[Shift]                 ok
+01:20:29 [00:00:10]      7/8  [HumanResources].[Employee]              ok
+01:20:29 [00:00:10]      8/8  [HumanResources].[EmployeePayHistory]    ok
 01:20:29 [00:00:10]    Importing data
-01:20:29 [00:00:10]      1/8  [Person].[AddressType]                                                     6         ok
-01:20:29 [00:00:10]      2/8  [Person].[BusinessEntity]                                                  20777     ok
-01:20:29 [00:00:10]      3/8  [Person].[ContactType]                                                     20        ok
-01:20:29 [00:00:10]      4/8  [Person].[Person]                                                          1000      ok
-01:20:30 [00:00:10]      5/8  [HumanResources].[Department]                                              16        ok
-01:20:30 [00:00:10]      6/8  [HumanResources].[Shift]                                                   3         ok
-01:20:30 [00:00:11]      7/8  [HumanResources].[Employee]                                                290       ok
-01:20:30 [00:00:11]      8/8  [HumanResources].[EmployeePayHistory]                                      316       ok
+01:20:29 [00:00:10]      1/8  [Person].[AddressType]                   6         ok
+01:20:29 [00:00:10]      2/8  [Person].[BusinessEntity]                20777     ok
+01:20:29 [00:00:10]      3/8  [Person].[ContactType]                   20        ok
+01:20:29 [00:00:10]      4/8  [Person].[Person]                        1000      ok
+01:20:30 [00:00:10]      5/8  [HumanResources].[Department]            16        ok
+01:20:30 [00:00:10]      6/8  [HumanResources].[Shift]                 3         ok
+01:20:30 [00:00:11]      7/8  [HumanResources].[Employee]              290       ok
+01:20:30 [00:00:11]      8/8  [HumanResources].[EmployeePayHistory]    316       ok
 01:20:30 [00:00:11]    done aw
 ```
 
