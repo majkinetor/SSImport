@@ -1,3 +1,18 @@
+
+function New-Database($Name, $ServerInstance, $Username, $Password, $DataDir) {
+    log "CREATING DATABASE" $env.Destination.Database
+    $master = Get-MsSqlConString -ServerInstance $ServerInstance -Database master -Username $Username -Password $Password
+    $query = "CREATE DATABASE $Name"
+    if ($DataDir) { $query += "
+        ON PRIMARY
+        ( NAME = N'$Name', FILENAME = N'$DataDir\$Name.mdf')
+        LOG ON
+        ( NAME = N'${Name}_log', FILENAME = N'$DataDir\${Name}_log.ldf')
+        "
+    }
+    Invoke-Sqlcmd -ConnectionString $master -Query $query
+}
+
 function Get-Server($ServerInstance, $Username, $Password) {
     $connection = New-Object -TypeName Microsoft.SqlServer.Management.Common.ServerConnection -ArgumentList $ServerInstance
     $connection.LoginSecure = $false

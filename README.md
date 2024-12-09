@@ -25,6 +25,7 @@ Each environment is a `HashTable` containing the following arguments:
 | `Destination` | HashTable        | Destination database connection (ServerInstance, Database, Username, Password) |
 | `Tables`      | Array[HashTable] | Array of tables to copy from the source to the destination database            |
 | `CreateDb`    | Bool             | Create destination database if it doesn't exist                                |
+| `DataDir`     | String           | Data directory on the destination server (only with `CreateDb`)                |
 | `Create`      | Bool             | Create tables on the destination database, ignore any existing ones            |
 | `Truncate`    | Bool             | Truncate tables on the destination database (ignored if `Drop` is used)        |
 | `Drop`        | Bool             | Drop tables in the destination database in reverse                             |

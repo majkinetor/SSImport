@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "PowerShell: Current File",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "cwd": "${cwd}"
+        },
+        {
+            "name": "PowerShell: ssimport",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}\\ssimport.ps1",
+            "cwd": "${cwd}"
+        }
+    ]
+}

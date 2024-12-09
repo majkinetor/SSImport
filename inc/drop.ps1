@@ -5,7 +5,7 @@ function drop() {
     for ($i = $Env.Tables.Count-1; $i -ge 0; $i--)
     {
         $table = $Env.Tables[$i]
-        log "$($i+1)/$($Env.Tables.Count)  $($table.SchemaImported).$($table.NameImported)" -Ident 1
+        log "$($i+1)/$($Env.Tables.Count)  $($table.SchemaImported).$($table.NameImported)" -Ident 1  -NoNewLine -PadRight 80
 
         try {
             #$res = $DestinationDb.ExecuteNonQuery("drop table [$($table.Name)]")
@@ -13,5 +13,6 @@ function drop() {
         } catch {
             if ($_.Exception.InnerException.Number -ne 3701) { throw $_ }   # Cannot drop the table '<table>', because it does not exist or you do not have permission.
         }
+        log  "ok" -Raw
     }
 }

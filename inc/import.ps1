@@ -14,7 +14,7 @@ function import() {
 
         $res = Invoke-Sqlcmd -ConnectionString $src -Query "select count(*) as count from ($($table.Query)) as t"
         log $res.count.ToString().PadRight(10, ' ') -Raw -NoNewLine
-        if (!$res.count) { log -Raw; continue }
+        if (!$res.count) { log  "ok" -Raw; continue }
 
         $sqlCommand = New-Object system.Data.SqlClient.SqlCommand($table.Query, $SQLConnection)
         [System.Data.SqlClient.SqlDataReader] $sqlReader = $sqlCommand.ExecuteReader()

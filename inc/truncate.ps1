@@ -3,9 +3,10 @@ function truncate() {
 
     log "Truncating tables"; $i = 1
     foreach ($table in $Env.Tables) {
-        log "$i/$($Env.Tables.Count)  $($table.Name)" -Ident 1
+        log "$i/$($Env.Tables.Count)  $($table.Name)" -Ident 1 -NoNewLine -PadRight 80
         $i++
 
         $res = Invoke-Sqlcmd -ConnectionString $dst -Query "truncate table $($table.SchemaImported).$($table.NameImported)"
+        log "ok" -Raw
     }
 }

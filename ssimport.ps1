@@ -1,13 +1,16 @@
+# v1.0 by majkinetor
+# https://github.com/majkinetor/SSImport
+
 param(
-    [string[]] $Environments = 'aw',
+    [string[]] $Environments,
     [int] $BulkCopyBatchSize = 250000,
     [int] $BulkCopyTimeout = 600
 )
 
-Get-ChildItem $PSScriptRoot\inc\*.ps1 | % {. $_ }
-Expand-Config
-
 Import-Module -Name SQLServer
+
+Get-ChildItem $PSScriptRoot\inc\*.ps1 | % {$_; . $_ }
+Expand-Config
 
 foreach ($e in $Environments) {
     $Env = $Config.$e
@@ -22,16 +25,20 @@ foreach ($e in $Environments) {
     $SourceDb      = Get-SqlDatabase -ConnectionString $src -Name $env.Source.Database
     $DestinationDb = Get-SqlDatabase -ConnectionString $dst -Name $env.Destination.Database
     if ($env.CreateDb -and !$DestinationDb) {
-        log "CREATING DATABASE" $env.Destination.Database
-        $master = Get-MsSqlConString -ServerInstance $env.Destination.ServerInstance -Database master -Username $env.Destination.Username -Password $env.Destination.Password
-        $res = Invoke-Sqlcmd -ConnectionString $master -Query "CREATE DATABASE $($env.Destination.Database)"
-    }
+        $params = @{
+            Name           = $Env.Destination.Database
+            ServerInstance = $Env.Destination.ServerInstance
+            Username       = $Env.Destination.Username
+            Password       = $Env.Destination.Password
+            DataDir        = $Env.DataDir
+        }
+        $res = New-Database @params
+    } else { drop }
 
-    drop
     create
     truncate
     import
     log "done $e"
-    log ("="*40)
+    log ("="*90)
 }
 log "done"
