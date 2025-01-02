@@ -17,7 +17,7 @@ function Expand-Config {
             $env.$key = $defaultValue
         }
 
-        $env.Tables = foreach ($table in $env.Tables) {
+        [array] $env.Tables = foreach ($table in $env.Tables) {
             [hashtable] $t = $table -is [string] ? @{ Name = $table } : $table
 
             $a = $t.Name -split '\.'

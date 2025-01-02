@@ -1,4 +1,4 @@
-# v1.0 by majkinetor
+# v1.01 by majkinetor
 # https://github.com/majkinetor/SSImport
 
 param(
