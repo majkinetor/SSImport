@@ -4,6 +4,10 @@ This script imports tables from one SQL Server to another. It is similar to the 
 
 The script can be quickly run after tweaking the parameters in the configuration file, which allows for fast experimentation.
 
+## Prerequisites
+
+1. SQL Server Powershell Module: `Install-Module -Name SQLServer`
+
 ## Usage
 
 1. Add environments and their parameters in the configuration file `config.ps1`
